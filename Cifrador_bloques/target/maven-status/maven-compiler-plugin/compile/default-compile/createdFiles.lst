@@ -1,1 +1,6 @@
-com\mycompany\cifrador_bloques\Cifrador_bloques.class
+com\mycompany\cifrador_bloques\File.class
+com\mycompany\cifrador_bloques\utils\ArchivoUtils.class
+com\mycompany\cifrador_bloques\utils\ClaveUtils.class
+com\mycompany\cifrador_bloques\InterfazUsuario.class
+com\mycompany\cifrador_bloques\utils\CifradoUtils.class
+com\mycompany\cifrador_bloques\Main.class
