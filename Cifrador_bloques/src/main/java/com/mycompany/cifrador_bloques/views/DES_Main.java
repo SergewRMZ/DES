@@ -2,7 +2,6 @@ package com.mycompany.cifrador_bloques.views;
 
 import com.mycompany.cifrador_bloques.utils.ArchivoUtils;
 import com.mycompany.cifrador_bloques.utils.CifradoUtils;
-import java.awt.Image;
 import java.io.File;
 import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
@@ -40,6 +39,7 @@ public class DES_Main extends javax.swing.JFrame {
     InputKey = new javax.swing.JTextField();
     vectorInit = new javax.swing.JTextField();
     Btn_Descifrar = new javax.swing.JButton();
+    Btn_Retroceder = new javax.swing.JButton();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,6 +82,14 @@ public class DES_Main extends javax.swing.JFrame {
       }
     });
 
+    Btn_Retroceder.setBackground(new java.awt.Color(51, 153, 255));
+    Btn_Retroceder.setText("Atrás");
+    Btn_Retroceder.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        Btn_RetrocederActionPerformed(evt);
+      }
+    });
+
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
@@ -102,11 +110,17 @@ public class DES_Main extends javax.swing.JFrame {
           .addComponent(KeyText, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(VectorText, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addGap(93, 93, 93))
+      .addGroup(layout.createSequentialGroup()
+        .addGap(15, 15, 15)
+        .addComponent(Btn_Retroceder, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-        .addGap(66, 66, 66)
+        .addContainerGap()
+        .addComponent(Btn_Retroceder)
+        .addGap(36, 36, 36)
         .addComponent(KeyText)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(InputKey, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -152,7 +166,7 @@ public class DES_Main extends javax.swing.JFrame {
     if (keyBytes == null) return;
 
     byte[] ivBytes = null;
-    if (modoOperacion != 1) { // Si no es ECB
+    if (modoOperacion != 1) {
         ivBytes = obtenerIV();
         if (ivBytes == null) return;
     }
@@ -190,12 +204,30 @@ public class DES_Main extends javax.swing.JFrame {
         return null;
     }
 
-    if (ivText.length() != 8) {
-        JOptionPane.showMessageDialog(this, "El vector de inicialización (IV) debe tener exactamente 8 caracteres.", "Error", JOptionPane.ERROR_MESSAGE);
+    String[] ivParts = ivText.split(","); // Supongamos que los valores están separados por comas
+    if (ivParts.length != 8) {
+        JOptionPane.showMessageDialog(this, "El vector de inicialización (IV) debe contener exactamente 8 valores.", "Error", JOptionPane.ERROR_MESSAGE);
         return null;
     }
 
-    return ivText.getBytes();
+    byte[] ivBytes = new byte[8];
+    try {
+      for (int i = 0; i < 8; i++) {
+          int value = Integer.parseInt(ivParts[i].trim());
+          if (value < 0 || value > 255) {
+              JOptionPane.showMessageDialog(this, "Cada valor del IV debe estar entre 0 y 255.", "Error", JOptionPane.ERROR_MESSAGE);
+              return null;
+          }
+          ivBytes[i] = (byte) value;
+      }
+    } 
+    
+    catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "El IV debe contener solo números entre 0 y 255, separados por comas.", "Error", JOptionPane.ERROR_MESSAGE);
+        return null;
+    }
+
+    return ivBytes;
   }
   
   private void Btn_CifrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_CifrarActionPerformed
@@ -217,6 +249,11 @@ public class DES_Main extends javax.swing.JFrame {
   private void Btn_DescifrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_DescifrarActionPerformed
     // TODO add your handling code here:
   }//GEN-LAST:event_Btn_DescifrarActionPerformed
+
+  private void Btn_RetrocederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_RetrocederActionPerformed
+    this.setVisible(false);
+    MainView.getInstanceMain().setVisible(true);
+  }//GEN-LAST:event_Btn_RetrocederActionPerformed
 
   /**
    * @param args the command line arguments
@@ -256,6 +293,7 @@ public class DES_Main extends javax.swing.JFrame {
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton Btn_Cifrar;
   private javax.swing.JButton Btn_Descifrar;
+  private javax.swing.JButton Btn_Retroceder;
   private javax.swing.JTextField InputKey;
   private javax.swing.JLabel KeyText;
   private javax.swing.JLabel VectorText;

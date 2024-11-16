@@ -12,3 +12,4 @@ com\mycompany\cifrador_bloques\views\MainView.class
 com\mycompany\cifrador_bloques\utils\ArchivoUtils.class
 com\mycompany\cifrador_bloques\App.class
 com\mycompany\cifrador_bloques\utils\ClaveUtils.class
+com\mycompany\cifrador_bloques\views\DES_Main$7.class
