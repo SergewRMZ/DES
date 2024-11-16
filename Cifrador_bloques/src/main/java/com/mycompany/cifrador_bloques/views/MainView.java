@@ -1,7 +1,10 @@
 package com.mycompany.cifrador_bloques.views;
 
+import com.mycompany.cifrador_bloques.utils.ArchivoUtils;
 import com.mycompany.cifrador_bloques.utils.ImageLoader;
+import java.io.File;
 import javax.swing.Icon;
+import javax.swing.JOptionPane;
 
 public class MainView extends javax.swing.JFrame {
   private static MainView instance;
@@ -73,7 +76,17 @@ public class MainView extends javax.swing.JFrame {
   }// </editor-fold>//GEN-END:initComponents
 
   private void Btn_StartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Btn_StartActionPerformed
-    // TODO add your handling code here:
+    File imagen = ArchivoUtils.seleccionarArchivoImagen();
+    if (imagen == null) {
+      JOptionPane.showMessageDialog(this, "No se seleccionó ningún archivo", "Error", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    else {
+      this.setVisible(false);
+      DES_Main desMain = DES_Main.getInstanceDESMain();
+      desMain.setVisible(true);
+      desMain.setImage(imagen);
+    }
   }//GEN-LAST:event_Btn_StartActionPerformed
 
   /**

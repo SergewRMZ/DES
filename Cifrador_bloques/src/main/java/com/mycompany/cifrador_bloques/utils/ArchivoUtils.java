@@ -1,6 +1,5 @@
 
 package com.mycompany.cifrador_bloques.utils;
-import com.mycompany.cifrador_bloques.InterfazUsuario;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,12 +28,22 @@ public class ArchivoUtils {
   }
 
   public static void guardarArchivoResultado(File archivoOriginal, byte[] contenido, int modoOperacion, int accion) throws IOException {
-    String sufijo = (accion == 1 ? "_e" : "_d") + InterfazUsuario.obtenerSufijoModo(modoOperacion);
+    String sufijo = (accion == 1 ? "_e" : "_d") + obtenerSufijoModo(modoOperacion);
     String nombreArchivo = archivoOriginal.getName();
     nombreArchivo = nombreArchivo.substring(0, nombreArchivo.lastIndexOf(".")) + sufijo + ".bmp";
 
     File archivoResultado = new File(archivoOriginal.getParent(), nombreArchivo);
     guardarArchivo(archivoResultado, contenido);
     System.out.println("Archivo guardado como: " + archivoResultado.getAbsolutePath());
+  }
+  
+  public static String obtenerSufijoModo(int modo) {
+    return switch (modo) {
+        case 1 -> "ECB";
+        case 2 -> "CBC";
+        case 3 -> "CFB";
+        case 4 -> "OFB";
+        default -> "";
+    };
   }
 }
